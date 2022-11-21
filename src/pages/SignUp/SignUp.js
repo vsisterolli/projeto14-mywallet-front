@@ -4,7 +4,7 @@ import React from "react";
 import UsualButton from "../../assets/styles/UsualButton";
 import StyledSignInScreen from "./StyledSignInScreen";
 
-export default function SignIn() {
+export default function SignUp() {
 
     const [formValue, setFormValue] = React.useState({
         "username":"",

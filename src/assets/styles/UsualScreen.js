@@ -7,7 +7,7 @@ const UsualScreen = styled.section`
     flex-direction: column;
     align-items: center;
 
-    background-color: #8b15be;
+    background-color: #8C11BE;
 
     font-family: "Raleway";
 

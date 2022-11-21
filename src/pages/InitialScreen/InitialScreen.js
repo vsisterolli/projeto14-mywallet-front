@@ -1,9 +1,10 @@
 import StyledInitialScreen from "./StyledInitialScreen"
 import { Link, useNavigate } from "react-router-dom"
 import UsualButton from "../../assets/styles/UsualButton"
-import { BASE_URL } from "../../assets/constants";
-import React from "react";
+import React, { useContext } from "react";
+import { userContext } from "../../App";
 import axios from "axios";
+import { BASE_URL } from "../../assets/constants";
 
 export default function InitialScreen() {
 
@@ -13,6 +14,7 @@ export default function InitialScreen() {
     })
 
     const navigate = useNavigate()
+    const [user, setUser] = useContext(userContext);
 
     function handleChange(e) {
         setFormValue({
@@ -21,10 +23,19 @@ export default function InitialScreen() {
         })
     }
     
+    React.useEffect(() => {
+        if(localStorage.getItem("userData") && localStorage.getItem("userData") !== "null") {
+            setUser(JSON.parse(localStorage.getItem("userData")))
+            navigate("/wallet")
+        }
+    }, [])
+
     function login(event) {
         event.preventDefault();
-        const promise = axios.post("//localhost:5000/sign-in", formValue);
+        const promise = axios.post(BASE_URL + "/sign-in", formValue);
         promise.then(response => {
+            localStorage.setItem("userData", JSON.stringify(response.data))
+            setUser(response.data)
             navigate("/wallet")    
         })
         .catch(e => alert(e.response.data))
@@ -38,7 +49,7 @@ export default function InitialScreen() {
                 <input onChange={handleChange} value={formValue.password} type="password" name="password" placeholder="Senha" required></input>
                 <UsualButton type="submit">Entrar</UsualButton>
             </form>
-            <Link to="/sign-in">Primeira vez? Cadastre-se!</Link>
+            <Link to="/sign-up">Primeira vez? Cadastre-se!</Link>
         </StyledInitialScreen>
     )
 }

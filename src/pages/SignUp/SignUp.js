@@ -3,6 +3,7 @@ import axios from "axios";
 import React from "react";
 import UsualButton from "../../assets/styles/UsualButton";
 import StyledSignInScreen from "./StyledSignInScreen";
+import { BASE_URL } from "../../assets/constants";
 
 export default function SignUp() {
 
@@ -24,12 +25,12 @@ export default function SignUp() {
     
     function signUp(event) {
         event.preventDefault();
-        const promise = axios.post("//localhost:5000/sign-up", formValue);
+        const promise = axios.post(BASE_URL + "/sign-up", formValue);
         promise.then(response => {
             alert("Account created succesfully!")
             navigate("/")    
         })
-        .catch(e => alert(e.response.data))
+        .catch(e => console.log(e.response.data))
     }  
 
     return (
@@ -40,7 +41,7 @@ export default function SignUp() {
                 <input onChange={handleChange} type="email" placeholder="Email" name="email" value={formValue.email} required></input>
                 <input onChange={handleChange} type="password" placeholder="Senha" name="password" value={formValue.password} required></input>
                 <input onChange={handleChange} type="password" placeholder="Confirme a senha" name="repeatPassword" value={formValue.repeatPassword} required></input>
-                <UsualButton type="submit">Entrar</UsualButton>
+                <UsualButton type="submit">Registrar-se</UsualButton>
             </form>
             <Link to="/">Já tem uma conta? Entre agora!</Link>
         </StyledSignInScreen>

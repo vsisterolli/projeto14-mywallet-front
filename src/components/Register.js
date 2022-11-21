@@ -9,7 +9,8 @@ export default function Register({data, user, setNeedUpdate, total}) {
 
     const navigate = useNavigate();
 
-    function deleteRegister() {
+    function deleteRegister(event) {
+        event.stopPropagation()
         if(!window.confirm("Realmente deseja deletar esse registro?"))
             return;
         const headers = {
@@ -44,14 +45,17 @@ export default function Register({data, user, setNeedUpdate, total}) {
     const day = dayjs(data.date).format("DD/MM/YYYY")
     return (
         <StyledRegister onClick={handleEdit} ref={messagesEndRef} value={data.value}><span className="date">{day}</span> 
-            <span className="description">{data.description}</span>
-            <span className="value">{Math.abs(data.value).toFixed(2)}</span>
-            <ion-icon onClick={deleteRegister} name="close-outline"></ion-icon>
+            <h2>{data.description}</h2>
+            <div>
+                <span className="value">{Math.abs(data.value).toFixed(2)}</span>
+                <ion-icon onClick={deleteRegister} name="close-outline"></ion-icon>
+            </div>
         </StyledRegister>
     )
 }
 
-const StyledRegister = styled.h2`
+const StyledRegister = styled.div`
+    display: flex;
     font-weight: 400;
     font-size: 16px;
     position: relative;
@@ -60,18 +64,28 @@ const StyledRegister = styled.h2`
     font-family: 'Raleway';
     .date {
         color: #C6C6C6;
-        margin: 30px;
+        margin-left: 10px;
+        margin-right 15px;
+    }
+    h2 {
+        width: 80%;
+        max-width: 1000px;
+    }
+    div {
+        color: black !important;
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        margin-right: 30px;
     }
     .value {
         color: ${props => props.value >= 0 ? "#03AC00" : "#C70000"};
         margin-left: 10px;
-        position: absolute;
         right: 60px;
     }
     ion-icon {
-        position: absolute;
-        right: 30px;
-        top: 1.5px;
+        margin-left: 10px;
         color: #c6c6c6;
     }
 

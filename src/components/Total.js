@@ -15,7 +15,7 @@ export default function Total({registers}) {
 
     return(
         <StyledTotal sum={sum}>
-            <h2><span className="saldo">SALDO</span><span className="soma">{sum}</span></h2>
+            <h2><span className="saldo">SALDO</span><span className="soma">{sum.toFixed(2)}</span></h2>
         </StyledTotal>
     )
 

@@ -38,7 +38,7 @@ export default function InitialScreen() {
             setUser(response.data)
             navigate("/wallet")    
         })
-        .catch(e => alert(e.response.data))
+        .catch(e => console.log(e))
     }      
 
     return (

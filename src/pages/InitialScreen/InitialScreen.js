@@ -5,9 +5,12 @@ import React, { useContext } from "react";
 import { userContext } from "../../App";
 import axios from "axios";
 import { BASE_URL } from "../../assets/constants";
+import { ThreeDots } from "react-loader-spinner";
 
 export default function InitialScreen() {
 
+    const [loading, setLoading] = React.useState(false);
+    
     const [formValue, setFormValue] = React.useState({
         "email": "",
         "password": ""
@@ -32,13 +35,18 @@ export default function InitialScreen() {
 
     function login(event) {
         event.preventDefault();
+        setLoading(true);
         const promise = axios.post(BASE_URL + "/sign-in", formValue);
         promise.then(response => {
+            setLoading(false)
             localStorage.setItem("userData", JSON.stringify(response.data))
             setUser(response.data)
             navigate("/wallet")    
         })
-        .catch(e => console.log(e))
+        .catch(e => {
+            alert(e.response.data)
+            setLoading(false);
+        })
     }      
 
     return (
@@ -47,7 +55,7 @@ export default function InitialScreen() {
             <form onSubmit={login}>
                 <input onChange={handleChange} value={formValue.email} type="email" name="email" placeholder="Email" required></input>
                 <input onChange={handleChange} value={formValue.password} type="password" name="password" placeholder="Senha" required></input>
-                <UsualButton type="submit">Entrar</UsualButton>
+                <UsualButton type="submit" disabled={loading}>{loading ?  <ThreeDots color="white"/> : "Entrar"}</UsualButton>
             </form>
             <Link to="/sign-up">Primeira vez? Cadastre-se!</Link>
         </StyledInitialScreen>

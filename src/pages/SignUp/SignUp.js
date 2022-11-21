@@ -3,9 +3,12 @@ import axios from "axios";
 import React from "react";
 import UsualButton from "../../assets/styles/UsualButton";
 import StyledSignInScreen from "./StyledSignInScreen";
+import { ThreeDots } from "react-loader-spinner";
 import { BASE_URL } from "../../assets/constants";
 
 export default function SignUp() {
+
+    const [loading, setLoading] = React.useState(false);
 
     const [formValue, setFormValue] = React.useState({
         "username":"",
@@ -25,12 +28,17 @@ export default function SignUp() {
     
     function signUp(event) {
         event.preventDefault();
+        setLoading(true);
         const promise = axios.post(BASE_URL + "/sign-up", formValue);
         promise.then(response => {
             alert("Account created succesfully!")
-            navigate("/")    
+            navigate("/")
+            setLoading(false)    
         })
-        .catch(e => console.log(e.response.data))
+        .catch(e => {
+            alert(e.response.data)
+            setLoading(false)
+        })
     }  
 
     return (
@@ -41,7 +49,7 @@ export default function SignUp() {
                 <input onChange={handleChange} type="email" placeholder="Email" name="email" value={formValue.email} required></input>
                 <input onChange={handleChange} type="password" placeholder="Senha" name="password" value={formValue.password} required></input>
                 <input onChange={handleChange} type="password" placeholder="Confirme a senha" name="repeatPassword" value={formValue.repeatPassword} required></input>
-                <UsualButton type="submit">Registrar-se</UsualButton>
+                <UsualButton type="submit" disabled={loading}>{loading ?  <ThreeDots color="white"/> : "Registrar-se"}</UsualButton>
             </form>
             <Link to="/">Já tem uma conta? Entre agora!</Link>
         </StyledSignInScreen>

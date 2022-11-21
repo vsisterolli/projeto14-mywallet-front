@@ -2,7 +2,7 @@ import UsualScreen from "../../assets/styles/UsualScreen"
 import styled from "styled-components"
 
 const StyledAddPage = styled(UsualScreen)`
-    div {
+    .header {
         width: 80vw;
         max-width: 326px;
         margin-top:25px;
@@ -26,6 +26,11 @@ const StyledAddPage = styled(UsualScreen)`
         font-weight: 700;
         font-size: 20px;
         line-height: 23px;
+        margin-bottom: 0px !important;
+        padding: 0px !important;
+        svg {
+            margin: 0 auto;
+        }
     }
 `
 

@@ -8,6 +8,7 @@ import { useNavigate } from "react-router";
 import React from "react";
 import { useSearchParams } from "react-router-dom";
 import { BASE_URL } from "../../assets/constants";
+import { ThreeDots } from "react-loader-spinner";
 
 export default function AddPage() {
     
@@ -15,6 +16,7 @@ export default function AddPage() {
     const user = useContext(userContext)[0];
     const navigate = useNavigate();
 
+    const [loading, setLoading] = React.useState(false)
     const [searchParams, setSearchParams] = useSearchParams();
     const data = JSON.parse(searchParams.get("data"))
 
@@ -45,9 +47,14 @@ export default function AddPage() {
 
         if(data) {
             // if data exist, it means that we are editing an existent register
+            setLoading(true)
             const promise = axios.put(BASE_URL + "/register", {...registerValue, "id": data.id}, headers)
-            promise.then((response) => navigate("/wallet"))
+            promise.then((response) => {
+                navigate("/wallet")
+                setLoading(false)
+            })
             .catch(() => {
+                setLoading(false)
                 localStorage.setItem("userData", null);
                 navigate("/")
             });
@@ -55,8 +62,12 @@ export default function AddPage() {
 
         else {
             // if it doesn't exist, we are creating a new one
+            setLoading(true)
             const promise = axios.post(BASE_URL + "/register", registerValue, headers)
-            promise.then((response) => navigate("/wallet"))
+            promise.then(() => {
+                navigate("/wallet")
+                setLoading(false)
+            })
             .catch(() => {
                 localStorage.setItem("userData", null);
                 navigate("/")
@@ -66,13 +77,13 @@ export default function AddPage() {
 
     return(
         <StyledAddPage>
-            <div>
+            <div className="header">
                 <h2>{data ? "Alterar" : "Adicionar"} {type === "input" ? "entrada" : "saída"}</h2>
             </div>
             <form onSubmit={saveRegister}>
                 <input type="number" value={formValue.value} onChange={handleChange} name="value" placeholder="Valor" min={0} required/>
                 <input type="text" value={formValue.description} onChange={handleChange} name="description" placeholder="Descricao" required/>
-                <UsualButton type="submit">Salvar {type === "input" ? "entrada" : "saída"}</UsualButton>
+                <UsualButton type="submit">{loading ? <ThreeDots color="white"/> : `Salvar ${type === "input" ? "entrada" : "saída"}`}</UsualButton>
             </form>
         </StyledAddPage>
     )

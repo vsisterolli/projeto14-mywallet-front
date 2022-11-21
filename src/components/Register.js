@@ -68,7 +68,7 @@ const StyledRegister = styled.div`
         margin-right 15px;
     }
     h2 {
-        width: 80%;
+        width: 80%
         max-width: 1000px;
     }
     div {
